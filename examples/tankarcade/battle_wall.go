@@ -41,7 +41,7 @@ func (b *battleWall) Init(scene *ge.Scene) {
 	scene.AddBody(&b.Body)
 
 	b.sprite = scene.NewSprite(ImageWall)
-	b.sprite.SetHue(spriteHue(b.alliance))
+	// b.sprite.SetHue(spriteHue(b.alliance))
 	b.sprite.Pos.Base = &b.Body.Pos
 	b.sprite.Shader = scene.NewShader(ShaderBuildingDamage)
 	b.sprite.Shader.SetFloatValue("HP", 1.0)

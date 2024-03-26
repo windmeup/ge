@@ -50,7 +50,7 @@ func (b *battleBonusGenerator) Init(scene *ge.Scene) {
 	scene.AddBody(&b.Body)
 
 	b.sprite = scene.NewSprite(ImageBonusGenerator)
-	b.sprite.SetHue(spriteHue(b.alliance))
+	// b.sprite.SetHue(spriteHue(b.alliance))
 	b.sprite.Pos.Base = &b.Body.Pos
 	b.sprite.Rotation = &b.Body.Rotation
 	b.sprite.Shader = scene.NewShader(ShaderBuildingDamage)

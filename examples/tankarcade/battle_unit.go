@@ -110,7 +110,7 @@ func (u *battleUnit) Init(scene *ge.Scene) {
 	scene.AddBody(&u.Body)
 
 	u.sprite = scene.NewSprite(u.config.image)
-	u.sprite.SetHue(spriteHue(u.config.alliance))
+	// u.sprite.SetHue(spriteHue(u.config.alliance))
 	u.sprite.Pos.Base = &u.Body.Pos
 	u.sprite.Rotation = &u.Body.Rotation
 	scene.AddGraphics(u.sprite)

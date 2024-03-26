@@ -25,7 +25,7 @@ func (b *battleMine) Init(scene *ge.Scene) {
 
 	b.sprite = scene.NewSprite(ImageMine)
 	b.sprite.Pos.Base = &b.body.Pos
-	b.sprite.SetHue(spriteHue(b.alliance))
+	// b.sprite.SetHue(spriteHue(b.alliance))
 	scene.AddGraphicsBelow(b.sprite, 1)
 
 	b.body.InitStaticCircle(b, 8)

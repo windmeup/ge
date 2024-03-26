@@ -96,7 +96,7 @@ func (resolver *collisionResolver) checkCollision(b1, b2 *Body) (Collision, bool
 
 func (resolver *collisionResolver) checkCirclesCollision(b1, b2 *Body) (Collision, bool) {
 	var result Collision
-	if !b1.BoundsRect().Overlaps(b2.BoundsRect()) {
+	if !b1.BoundsRect().Intersects(b2.BoundsRect()) {
 		return result, false
 	}
 	r1 := b1.CircleRadius()
@@ -115,7 +115,7 @@ func (resolver *collisionResolver) checkCirclesCollision(b1, b2 *Body) (Collisio
 
 func (resolver *collisionResolver) checkCircleRotatedRectCollision(circle, rr *Body) (Collision, bool) {
 	var result Collision
-	if !circle.BoundsRect().Overlaps(rr.BoundsRect()) {
+	if !circle.BoundsRect().Intersects(rr.BoundsRect()) {
 		return result, false
 	}
 
@@ -195,7 +195,7 @@ func (resolver *collisionResolver) getAxisOverlap(poly1, poly2 []gmath.Vec) (gma
 
 func (resolver *collisionResolver) checkRotatedRectsCollision(b1, b2 *Body) (Collision, bool) {
 	var result Collision
-	if !b1.BoundsRect().Overlaps(b2.BoundsRect()) {
+	if !b1.BoundsRect().Intersects(b2.BoundsRect()) {
 		return result, false
 	}
 

@@ -163,7 +163,7 @@ func (s *Sprite) ImageID() resource.ImageID {
 
 func (s *Sprite) SetImage(img resource.Image) {
 	s.id = img.ID
-	w, h := img.Data.Size()
+	w, h := img.Data.Bounds().Dx(), img.Data.Bounds().Dy()
 	s.imageWidth = float64(w)
 	s.imageHeight = float64(h)
 	s.image = img.Data
@@ -179,7 +179,7 @@ func (s *Sprite) SetImage(img resource.Image) {
 
 func (s *Sprite) SetRepeatedImage(img resource.Image, width, height float64) {
 	s.id = img.ID
-	w, h := img.Data.Size()
+	w, h := img.Data.Bounds().Dx(), img.Data.Bounds().Dy()
 	s.imageWidth = float64(w)
 	s.imageHeight = float64(h)
 	repeated := ebiten.NewImage(int(width), int(height))
@@ -213,12 +213,12 @@ func (s *Sprite) AnchorPos() Pos {
 }
 
 func (s *Sprite) ImageWidth() float64 {
-	w, _ := s.image.Size()
+	w := s.image.Bounds().Dx()
 	return float64(w)
 }
 
 func (s *Sprite) ImageHeight() float64 {
-	_, h := s.image.Size()
+	h := s.image.Bounds().Dy()
 	return float64(h)
 }
 
@@ -319,7 +319,7 @@ func (s *Sprite) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 		var options ebiten.DrawRectShaderOptions
 		options.GeoM = drawOptions.GeoM
 		options.ColorScale = drawOptions.ColorScale
-		options.CompositeMode = drawOptions.CompositeMode
+		options.Blend = drawOptions.Blend
 		options.Images[0] = srcImage
 		options.Images[1] = s.Shader.Texture1.Data
 		options.Images[2] = s.Shader.Texture2.Data
@@ -328,5 +328,3 @@ func (s *Sprite) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 		screen.DrawRectShader(srcBounds.Dx(), srcBounds.Dy(), s.Shader.compiled, &options)
 	}
 }
-
-var tmpImage = ebiten.NewImage(64, 64)

@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"fmt"
 	"strings"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 type Dictionary struct {
@@ -98,7 +101,7 @@ func (d *Dictionary) GetTitleCase(key string) string {
 		if !ok {
 			return "{{" + key + "}}"
 		}
-		s = strings.Title(s2)
+		s = cases.Title(language.English).String(s2) // TODO other language
 		d.titleWords[key] = s
 	}
 	return s

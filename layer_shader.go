@@ -56,7 +56,7 @@ func (l *ShaderLayer) Draw(screen *ebiten.Image) {
 	}
 
 	if l.tmp == nil {
-		l.width, l.height = screen.Size()
+		l.width, l.height = screen.Bounds().Dx(), screen.Bounds().Dy()
 		l.tmp = ebiten.NewImage(l.width, l.height)
 	} else {
 		l.tmp.Clear()

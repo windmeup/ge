@@ -17,7 +17,7 @@ type Texture struct {
 func NewHorizontallyRepeatedTexture(img resource.Image, maxLen float64) *Texture {
 	tex := &Texture{}
 
-	w, h := img.Data.Size()
+	w, h := img.Data.Bounds().Dx(), img.Data.Bounds().Dy()
 	tex.width = math.Round(maxLen)
 	tex.height = float64(h)
 

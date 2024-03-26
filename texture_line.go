@@ -64,7 +64,8 @@ func (l *TextureLine) BoundsRect() gmath.Rect {
 	return gmath.Rect{Min: gmath.Vec{X: x0, Y: y0}, Max: gmath.Vec{X: x1, Y: y1}}
 }
 
-func (l *TextureLine) Draw(screen *ebiten.Image) {
+func (l *TextureLine) Draw(*ebiten.Image) {
+	// do nothing
 }
 
 func (l *TextureLine) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
@@ -118,7 +119,7 @@ func (l *TextureLine) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 			drawDest = screen
 			options.GeoM = drawOptions.GeoM
 		}
-		options.CompositeMode = drawOptions.CompositeMode
+		options.Blend = drawOptions.Blend
 		options.Images[0] = subImage
 		options.Images[1] = l.Shader.Texture1.Data
 		options.Images[2] = l.Shader.Texture2.Data

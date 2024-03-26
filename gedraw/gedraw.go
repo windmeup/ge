@@ -14,7 +14,7 @@ func DrawRect(dst *ebiten.Image, rect gmath.Rect, c color.RGBA) {
 	var drawOptions ebiten.DrawImageOptions
 	drawOptions.GeoM.Scale(rect.Width(), rect.Height())
 	drawOptions.GeoM.Translate(rect.Min.X, rect.Min.Y)
-	drawOptions.ColorM.ScaleWithColor(c)
+	drawOptions.ColorScale.ScaleWithColor(c)
 	dst.DrawImage(primitives.WhitePixel, &drawOptions)
 }
 

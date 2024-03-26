@@ -134,9 +134,9 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 	numLines := strings.Count(l.Text, "\n") + 1
 
 	var containerRect gmath.Rect
-	bounds := text.BoundString(l.face, l.Text)
-	boundsWidth := float64(bounds.Dx())
-	boundsHeight := float64(bounds.Dy())
+	bounds, _ := font.BoundString(l.face, l.Text) // assume bounds is well-formed and its width and height is integer
+	boundsWidth := float64((bounds.Max.X - bounds.Min.X).Floor())
+	boundsHeight := float64((bounds.Max.Y - bounds.Min.Y).Floor())
 	if l.Width == 0 && l.Height == 0 {
 		// Auto-sized container.
 		switch l.GrowHorizontal {
@@ -229,8 +229,8 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 			lineText = textRemaining[:nextLine]
 			textRemaining = textRemaining[nextLine+len("\n"):]
 		}
-		lineBounds := text.BoundString(l.face, lineText)
-		lineBoundsWidth := float64(lineBounds.Dx())
+		lineBounds, _ := font.BoundString(l.face, l.Text) // assume bounds is well-formed and its width and height is integer
+		lineBoundsWidth := float64((lineBounds.Max.X - lineBounds.Min.X).Floor())
 		offsetX := 0.0
 		switch l.AlignHorizontal {
 		case AlignHorizontalCenter:

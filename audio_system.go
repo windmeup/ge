@@ -82,7 +82,7 @@ func (sys *AudioSystem) init(audioContext *audio.Context, l *resource.Loader) {
 		// To avoid that delay, we force that factory to initialize
 		// right now, before the game is started.
 		dummy := sys.audioContext.NewPlayerFromBytes(nil)
-		dummy.Rewind()
+		_ = dummy.Rewind()
 	}
 }
 
@@ -100,9 +100,7 @@ func (sys *AudioSystem) Update() {
 		}
 		// Do a dequeue.
 		sys.currentQueueSound = sys.playSound(sys.soundQueue[0], 1)
-		for i, id := range sys.soundQueue[1:] {
-			sys.soundQueue[i] = id
-		}
+		copy(sys.soundQueue, sys.soundQueue[1:])
 		sys.soundQueue = sys.soundQueue[:len(sys.soundQueue)-1]
 		return
 	}
@@ -121,11 +119,11 @@ func (sys *AudioSystem) SetGroupVolume(groupID uint, multiplier float64) {
 }
 
 func (sys *AudioSystem) DecodeWAV(r io.Reader) (*wav.Stream, error) {
-	return wav.Decode(sys.audioContext, r)
+	return wav.DecodeWithSampleRate(sys.audioContext.SampleRate(), r)
 }
 
 func (sys *AudioSystem) DecodeOGG(r io.Reader) (*vorbis.Stream, error) {
-	return vorbis.Decode(sys.audioContext, r)
+	return vorbis.DecodeWithSampleRate(sys.audioContext.SampleRate(), r)
 }
 
 func (sys *AudioSystem) PauseCurrentMusic() {
@@ -175,7 +173,7 @@ func (sys *AudioSystem) PlayMusic(id resource.AudioID) {
 	}
 	sys.currentMusic = res
 	res.Player.SetVolume(res.Volume * sys.groupVolume[res.Group])
-	res.Player.Rewind()
+	_ = res.Player.Rewind()
 	res.Player.Play()
 }
 
@@ -210,7 +208,7 @@ func (sys *AudioSystem) playSound(id resource.AudioID, vol float64) resource.Aud
 	volumeMultiplier := sys.groupVolume[res.Group] * vol
 	if volumeMultiplier != 0 {
 		res.Player.SetVolume(res.Volume * volumeMultiplier)
-		res.Player.Rewind()
+		_ = res.Player.Rewind()
 		res.Player.Play()
 	}
 	return res

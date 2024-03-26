@@ -73,10 +73,12 @@ func NewParticleEmitter() *ParticleEmitter {
 	}
 }
 
-func (e *ParticleEmitter) Init(scene *Scene) {}
+func (e *ParticleEmitter) Init(*Scene) {
+	// do nothing
+}
 
 func (e *ParticleEmitter) SetImage(img resource.Image) {
-	w, h := img.Data.Size()
+	w, h := img.Data.Bounds().Dx(), img.Data.Bounds().Dy()
 	e.image = img.Data
 	e.FrameWidth = img.DefaultFrameWidth
 	if e.FrameWidth == 0 {

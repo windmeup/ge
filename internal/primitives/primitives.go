@@ -24,6 +24,6 @@ func DrawLine(dst *ebiten.Image, x1, y1, x2, y2 float64, clr color.Color) {
 	op.GeoM.Scale(length, 1)
 	op.GeoM.Rotate(math.Atan2(y2-y1, x2-x1))
 	op.GeoM.Translate(x1, y1)
-	op.ColorM.ScaleWithColor(clr)
+	op.ColorScale.ScaleWithColor(clr)
 	dst.DrawImage(WhitePixel, op)
 }

@@ -8,6 +8,7 @@ require (
 	github.com/quasilyte/gmath v0.0.0-20240205181328-bacb32a49519
 	golang.org/x/exp v0.0.0-20240325151524-a685a6edb6d8
 	golang.org/x/image v0.15.0
+	golang.org/x/text v0.14.0
 )
 
 require (
@@ -20,5 +21,4 @@ require (
 	golang.org/x/mobile v0.0.0-20240320162201-c76e57eead38 // indirect
 	golang.org/x/sync v0.6.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
 )

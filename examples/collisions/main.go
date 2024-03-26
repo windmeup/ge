@@ -1,13 +1,14 @@
 package main
 
 import (
+	"image/color"
+
 	"github.com/quasilyte/ge"
 	"github.com/quasilyte/ge/gedebug"
 	"github.com/quasilyte/ge/input"
 	"github.com/quasilyte/ge/physics"
 	"github.com/quasilyte/gmath"
 
-	"image/color"
 	_ "image/png"
 )
 
@@ -86,7 +87,9 @@ func (c *controller) Init(scene *ge.Scene) {
 	}
 }
 
-func (c *controller) Update(delta float64) {}
+func (c *controller) Update(float64) {
+	// do nothing
+}
 
 type player struct {
 	body    physics.Body

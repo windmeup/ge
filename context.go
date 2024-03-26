@@ -117,7 +117,6 @@ func NewContext(config ContextConfig) *Context {
 
 func (ctx *Context) ChangeScene(controller SceneController) {
 	ctx.nextScene = ctx.newRootScene(controller)
-
 }
 
 func (ctx *Context) newRootScene(controller SceneController) *RootScene {

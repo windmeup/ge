@@ -77,8 +77,8 @@ func (sys *System) UpdateWithDelta(delta float64) {
 	//	prev simulated <- simulated
 	//	pending <- prev simulated
 	//	simulated <- pending
-	sys.prevSimulatedEvents, sys.pendingEvents, sys.simulatedEvents =
-		sys.simulatedEvents, sys.prevSimulatedEvents, sys.pendingEvents
+	sys.prevSimulatedEvents, sys.pendingEvents, sys.simulatedEvents = sys.simulatedEvents,
+		sys.prevSimulatedEvents, sys.pendingEvents
 	sys.pendingEvents = sys.pendingEvents[:0]
 	sys.hasSimulatedActions = false
 	for i := range sys.simulatedEvents {
@@ -198,6 +198,8 @@ func (sys *System) updateGamepadInfo(id ebiten.GamepadID, info *gamepadInfo) {
 			v := ebiten.GamepadAxisValue(id, axis)
 			info.axisValues[axis] = v
 		}
+	default:
+		// do nothing
 	}
 }
 

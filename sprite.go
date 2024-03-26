@@ -102,8 +102,10 @@ func (c *ColorScale) SetRGBA(r, g, b, a uint8) {
 	c.A = float32(a) / 255
 }
 
-var defaultColorScale = ColorScale{1, 1, 1, 1}
-var transparentColor = ColorScale{0, 0, 0, 0}
+var (
+	defaultColorScale = ColorScale{1, 1, 1, 1}
+	transparentColor  = ColorScale{0, 0, 0, 0}
+)
 
 func NewSprite(ctx *Context) *Sprite {
 	s := &Sprite{

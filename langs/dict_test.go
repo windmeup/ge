@@ -43,5 +43,4 @@ func TestDictGet(t *testing.T) {
 			t.Fatalf("Get(%q):\nhave: %q\nwant: %q", test.keys, result, test.result)
 		}
 	}
-
 }

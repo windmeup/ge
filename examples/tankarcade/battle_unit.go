@@ -17,10 +17,12 @@ var facingAngles = []gmath.Rad{
 	facingUp,
 }
 
-const facingRight = 0 * (math.Pi / 2)
-const facingDown = 1 * (math.Pi / 2)
-const facingLeft = 2 * (math.Pi / 2)
-const facingUp = 3 * (math.Pi / 2)
+const (
+	facingRight = 0 * (math.Pi / 2)
+	facingDown  = 1 * (math.Pi / 2)
+	facingLeft  = 2 * (math.Pi / 2)
+	facingUp    = 3 * (math.Pi / 2)
+)
 
 type battleUnit struct {
 	scene *ge.Scene

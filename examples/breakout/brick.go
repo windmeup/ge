@@ -7,9 +7,11 @@ import (
 	"github.com/quasilyte/gmath"
 )
 
-const brickDefaultWidth float64 = 64
-const brickShardWidth float64 = 8
-const brickShardHeight float64 = 8
+const (
+	brickDefaultWidth float64 = 64
+	brickShardWidth   float64 = 8
+	brickShardHeight  float64 = 8
+)
 
 type brick struct {
 	scene  *ge.Scene
@@ -79,7 +81,9 @@ func (b *brick) Hit(hitPos gmath.Vec) bool {
 
 func (b *brick) IsDisposed() bool { return b.body.IsDisposed() }
 
-func (b *brick) Update(delta float64) {}
+func (b *brick) Update(float64) {
+	// do nothing
+}
 
 func (b *brick) Dispose() {
 	b.body.Dispose()

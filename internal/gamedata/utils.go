@@ -13,5 +13,5 @@ func mkdirAll(path string) error {
 	if fileExists(path) {
 		return nil
 	}
-	return os.MkdirAll(path, 0755)
+	return os.MkdirAll(path, 0o755)
 }

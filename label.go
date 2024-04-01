@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/text"
+	"github.com/hajimehoshi/ebiten/v2/text/v2"
 	"github.com/quasilyte/gmath"
 	"golang.org/x/image/font"
 )
@@ -61,17 +61,18 @@ type Label struct {
 	GrowVertical    GrowVertical
 	GrowHorizontal  GrowHorizontal
 
-	face       font.Face
+	face       text.Face
 	capHeight  float64
 	lineHeight float64
 }
 
-func NewLabel(ff font.Face) *Label {
-	m := ff.Metrics()
-	capHeight := math.Abs(float64(m.CapHeight.Floor()))
-	lineHeight := float64(m.Height.Floor())
+func NewLabel(f font.Face) *Label {
+	tf := text.NewGoXFace(f)
+	m := tf.Metrics()
+	capHeight := m.HLineGap
+	lineHeight := m.HAscent + m.HDescent
 	label := &Label{
-		face:             ff,
+		face:             tf,
 		capHeight:        capHeight,
 		lineHeight:       lineHeight,
 		colorScale:       defaultColorScale,
@@ -134,9 +135,7 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 	numLines := strings.Count(l.Text, "\n") + 1
 
 	var containerRect gmath.Rect
-	bounds, _ := font.BoundString(l.face, l.Text) // assume bounds is well-formed and its width and height is integer
-	boundsWidth := float64((bounds.Max.X - bounds.Min.X).Floor())
-	boundsHeight := float64((bounds.Max.Y - bounds.Min.Y).Floor())
+	boundsWidth, boundsHeight := text.Measure(l.Text, l.face, 0)
 	if l.Width == 0 && l.Height == 0 {
 		// Auto-sized container.
 		switch l.GrowHorizontal {
@@ -151,6 +150,8 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 			containerRect.Min.X = pos.X - boundsWidth/2
 			containerRect.Max.X = pos.X + boundsWidth/2
 			pos.X -= boundsWidth / 2
+		default:
+			// do nothing
 		}
 		switch l.GrowVertical {
 		case GrowVerticalDown:
@@ -164,6 +165,8 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 			containerRect.Min.Y = pos.Y - boundsHeight/2
 			containerRect.Max.Y = pos.Y + boundsHeight/2
 			pos.Y -= boundsHeight / 2
+		default:
+			// do nothing
 		}
 	} else {
 		containerRect = gmath.Rect{
@@ -209,14 +212,14 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 		pos.Y += containerRect.Height() - l.estimateHeight(numLines)
 	}
 
-	var drawOptions ebiten.DrawImageOptions
+	var drawOptions text.DrawOptions
 	drawOptions.ColorScale = l.ebitenColorScale
 	drawOptions.Filter = ebiten.FilterLinear
 
 	if l.AlignHorizontal == AlignHorizontalLeft {
 		drawOptions.GeoM.Translate(math.Round(pos.X), math.Round(pos.Y))
 		drawOptions.GeoM.Translate(offset.X, offset.Y)
-		text.DrawWithOptions(screen, l.Text, l.face, &drawOptions)
+		text.Draw(screen, l.Text, l.face, &drawOptions)
 		return
 	}
 
@@ -229,19 +232,20 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 			lineText = textRemaining[:nextLine]
 			textRemaining = textRemaining[nextLine+len("\n"):]
 		}
-		lineBounds, _ := font.BoundString(l.face, l.Text) // assume bounds is well-formed and its width and height is integer
-		lineBoundsWidth := float64((lineBounds.Max.X - lineBounds.Min.X).Floor())
+		lineBoundsWidth, _ := text.Measure(l.Text, l.face, 0)
 		offsetX := 0.0
 		switch l.AlignHorizontal {
 		case AlignHorizontalCenter:
 			offsetX = (containerRect.Width() - lineBoundsWidth) / 2
 		case AlignHorizontalRight:
 			offsetX = containerRect.Width() - lineBoundsWidth
+		default:
+			// do nothing
 		}
 		drawOptions.GeoM.Reset()
 		drawOptions.GeoM.Translate(math.Round(pos.X+offsetX), math.Round(pos.Y+offsetY))
 		drawOptions.GeoM.Translate(offset.X, offset.Y)
-		text.DrawWithOptions(screen, lineText, l.face, &drawOptions)
+		text.Draw(screen, lineText, l.face, &drawOptions)
 		if nextLine == -1 {
 			break
 		}

@@ -70,7 +70,7 @@ func NewLabel(f font.Face) *Label {
 	tf := text.NewGoXFace(f)
 	m := tf.Metrics()
 	capHeight := m.HLineGap
-	lineHeight := m.HAscent + m.HDescent
+	lineHeight := m.HAscent + m.HDescent + m.HLineGap
 	label := &Label{
 		face:             tf,
 		capHeight:        capHeight,

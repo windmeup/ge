@@ -62,19 +62,15 @@ type Label struct {
 	GrowHorizontal  GrowHorizontal
 
 	face       text.Face
-	capHeight  float64
 	lineHeight float64
 }
 
 func NewLabel(f font.Face) *Label {
 	tf := text.NewGoXFace(f)
 	m := tf.Metrics()
-	capHeight := m.HLineGap
-	lineHeight := m.HAscent + m.HDescent + m.HLineGap
 	label := &Label{
 		face:             tf,
-		capHeight:        capHeight,
-		lineHeight:       lineHeight,
+		lineHeight:       m.HAscent + m.HDescent + m.HLineGap,
 		colorScale:       defaultColorScale,
 		ebitenColorScale: defaultColorScale.toEbitenColorScale(),
 		Visible:          true,
@@ -128,9 +124,6 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 	}
 
 	pos := l.Pos.Resolve()
-
-	// Adjust the pos, since "dot position" (baseline) is not a top-left corner.
-	pos.Y += l.capHeight
 
 	var containerRect gmath.Rect
 	boundsWidth, boundsHeight := text.Measure(l.Text, l.face, 0)
@@ -209,13 +202,11 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 	case AlignVerticalTop:
 		drawOptions.SecondaryAlign = text.AlignStart
 	case AlignVerticalCenter:
-		numLines := strings.Count(l.Text, "\n") + 1
 		drawOptions.SecondaryAlign = text.AlignCenter
-		pos.Y += (containerRect.Height() - l.estimateHeight(numLines)) / 2
+		pos.Y += containerRect.Height() / 2
 	case AlignVerticalBottom:
-		numLines := strings.Count(l.Text, "\n") + 1
 		drawOptions.SecondaryAlign = text.AlignEnd
-		pos.Y += containerRect.Height() - l.estimateHeight(numLines)
+		pos.Y += containerRect.Height()
 	}
 
 	switch l.AlignHorizontal {
@@ -259,12 +250,4 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 
 func (l *Label) Draw(screen *ebiten.Image) {
 	l.DrawWithOffset(screen, gmath.Vec{})
-}
-
-func (l *Label) estimateHeight(numLines int) float64 {
-	estimatedHeight := l.capHeight
-	if numLines >= 2 {
-		estimatedHeight += (float64(numLines) - 1) * l.lineHeight
-	}
-	return estimatedHeight
 }

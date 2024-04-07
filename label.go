@@ -132,8 +132,6 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 	// Adjust the pos, since "dot position" (baseline) is not a top-left corner.
 	pos.Y += l.capHeight
 
-	numLines := strings.Count(l.Text, "\n") + 1
-
 	var containerRect gmath.Rect
 	boundsWidth, boundsHeight := text.Measure(l.Text, l.face, 0)
 	if l.Width == 0 && l.Height == 0 {
@@ -203,18 +201,33 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 		}
 	}
 
-	switch l.AlignVertical {
-	case AlignVerticalTop:
-		// Do nothing.
-	case AlignVerticalCenter:
-		pos.Y += (containerRect.Height() - l.estimateHeight(numLines)) / 2
-	case AlignVerticalBottom:
-		pos.Y += containerRect.Height() - l.estimateHeight(numLines)
-	}
-
 	var drawOptions text.DrawOptions
 	drawOptions.ColorScale = l.ebitenColorScale
 	drawOptions.Filter = ebiten.FilterLinear
+
+	switch l.AlignVertical {
+	case AlignVerticalTop:
+		drawOptions.SecondaryAlign = text.AlignStart
+	case AlignVerticalCenter:
+		numLines := strings.Count(l.Text, "\n") + 1
+		drawOptions.SecondaryAlign = text.AlignCenter
+		pos.Y += (containerRect.Height() - l.estimateHeight(numLines)) / 2
+	case AlignVerticalBottom:
+		numLines := strings.Count(l.Text, "\n") + 1
+		drawOptions.SecondaryAlign = text.AlignEnd
+		pos.Y += containerRect.Height() - l.estimateHeight(numLines)
+	}
+
+	switch l.AlignHorizontal {
+	case AlignHorizontalLeft:
+		drawOptions.PrimaryAlign = text.AlignStart
+	case AlignHorizontalCenter:
+		drawOptions.PrimaryAlign = text.AlignCenter
+		pos.X += containerRect.Width() / 2
+	case AlignHorizontalRight:
+		drawOptions.PrimaryAlign = text.AlignEnd
+		pos.X += containerRect.Width()
+	}
 
 	if l.AlignHorizontal == AlignHorizontalLeft {
 		drawOptions.GeoM.Translate(math.Round(pos.X), math.Round(pos.Y))
@@ -223,6 +236,7 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 		return
 	}
 
+	// TODO text.Draw multi-line text bug ????
 	textRemaining := l.Text
 	offsetY := 0.0
 	for {
@@ -232,18 +246,8 @@ func (l *Label) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 			lineText = textRemaining[:nextLine]
 			textRemaining = textRemaining[nextLine+len("\n"):]
 		}
-		lineBoundsWidth, _ := text.Measure(l.Text, l.face, 0)
-		offsetX := 0.0
-		switch l.AlignHorizontal {
-		case AlignHorizontalCenter:
-			offsetX = (containerRect.Width() - lineBoundsWidth) / 2
-		case AlignHorizontalRight:
-			offsetX = containerRect.Width() - lineBoundsWidth
-		default:
-			// do nothing
-		}
 		drawOptions.GeoM.Reset()
-		drawOptions.GeoM.Translate(math.Round(pos.X+offsetX), math.Round(pos.Y+offsetY))
+		drawOptions.GeoM.Translate(math.Round(pos.X), math.Round(pos.Y+offsetY))
 		drawOptions.GeoM.Translate(offset.X, offset.Y)
 		text.Draw(screen, lineText, l.face, &drawOptions)
 		if nextLine == -1 {

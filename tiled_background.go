@@ -57,7 +57,6 @@ func (bg *TiledBackground) LoadTilesetWithRand(ctx *Context, rand *gmath.Rand, w
 	combined := ebiten.NewImage(int(width), int(height))
 	var op ebiten.DrawImageOptions
 	applyColorScale(bg.ColorScale, &op.ColorScale)
-	bg.Hue = .5
 	if bg.Hue != 0 {
 		op.ColorM.RotateHue(float64(bg.Hue))
 	}

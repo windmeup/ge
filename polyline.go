@@ -68,11 +68,11 @@ func (l *PolyLine) Draw(screen *ebiten.Image) {
 	}
 
 	points := l.Points
-	var colorM ebiten.ColorM
+	var colorScale ebiten.ColorScale
 	for i := 0; i < len(points)-1; i++ {
 		pt1 := points[i]
 		pt2 := points[i+1]
-		applyColorScale(pt2.ColorScale, &colorM)
-		drawLine(screen, pt1.Pos, pt2.Pos, l.Width, colorM)
+		applyColorScale(pt2.ColorScale, &colorScale)
+		drawLine(screen, pt1.Pos, pt2.Pos, l.Width, colorScale)
 	}
 }

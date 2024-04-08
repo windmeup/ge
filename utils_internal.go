@@ -4,15 +4,11 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
-func applyColorScale(c ColorScale, colorM *ebiten.ColorM) {
+func applyColorScale(c ColorScale, ec *ebiten.ColorScale) {
 	if c == defaultColorScale {
 		return
 	}
-	r := float64(c.R)
-	g := float64(c.G)
-	b := float64(c.B)
-	a := float64(c.A)
-	colorM.Scale(r, g, b, a)
+	ec.ScaleWithColorScale(c.toEbitenColorScale())
 }
 
 func assignColors(vertices []ebiten.Vertex, c ColorScale) {

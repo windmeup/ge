@@ -26,11 +26,6 @@ type TiledBackground struct {
 	combined *ebiten.Image
 }
 
-type tileInfo struct {
-	offset gmath.Vec
-	frame  int
-}
-
 func NewTiledBackground(ctx *Context) *TiledBackground {
 	return &TiledBackground{
 		Visible:    true,
@@ -61,7 +56,8 @@ func (bg *TiledBackground) LoadTilesetWithRand(ctx *Context, rand *gmath.Rand, w
 
 	combined := ebiten.NewImage(int(width), int(height))
 	var op ebiten.DrawImageOptions
-	applyColorScale(bg.ColorScale, &op.ColorM)
+	applyColorScale(bg.ColorScale, &op.ColorScale)
+	bg.Hue = .5
 	if bg.Hue != 0 {
 		op.ColorM.RotateHue(float64(bg.Hue))
 	}
@@ -101,19 +97,19 @@ func (bg *TiledBackground) DrawPartialWithOffset(screen *ebiten.Image, section g
 
 	// TODO: handle pos too?
 
-	min := gmath.Vec{X: math.Round(section.Min.X), Y: math.Round(section.Min.Y)}
-	max := gmath.Vec{X: math.Round(section.Max.X), Y: math.Round(section.Max.Y)}
+	pMin := gmath.Vec{X: math.Round(section.Min.X), Y: math.Round(section.Min.Y)}
+	pMax := gmath.Vec{X: math.Round(section.Max.X), Y: math.Round(section.Max.Y)}
 	unsafeSrc := toUnsafeImage(bg.combined)
 	unsafeSubImage := bg.imageCache.UnsafeImageForSubImage()
 	unsafeSubImage.original = unsafeSrc
 	unsafeSubImage.bounds = image.Rectangle{
-		Min: image.Point{X: int(min.X), Y: int(min.Y)},
-		Max: image.Point{X: int(max.X), Y: int(max.Y)},
+		Min: image.Point{X: int(pMin.X), Y: int(pMin.Y)},
+		Max: image.Point{X: int(pMax.X), Y: int(pMax.Y)},
 	}
 	unsafeSubImage.image = unsafeSrc.image
 	srcImage := toEbitenImage(unsafeSubImage)
 	var op ebiten.DrawImageOptions
-	op.GeoM.Translate(min.X, min.Y)
+	op.GeoM.Translate(pMin.X, pMin.Y)
 	op.GeoM.Translate(offset.X, offset.Y)
 	screen.DrawImage(srcImage, &op)
 }

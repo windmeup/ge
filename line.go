@@ -14,9 +14,7 @@ type Line struct {
 
 	Width float64
 
-	colorScale    ColorScale
-	colorM        ebiten.ColorM
-	colorsChanged bool
+	colorScale ColorScale
 
 	Visible bool
 
@@ -65,13 +63,9 @@ func (l *Line) DrawWithOffset(screen *ebiten.Image, offset gmath.Vec) {
 	if !l.Visible {
 		return
 	}
-	if l.colorsChanged {
-		l.colorsChanged = false
-		l.recalculateColorM()
-	}
 	pos1 := l.BeginPos.Resolve()
 	pos2 := l.EndPos.Resolve()
-	drawLine(screen, pos1.Add(offset), pos2.Add(offset), l.Width, l.colorM)
+	drawLine(screen, pos1.Add(offset), pos2.Add(offset), l.Width, l.colorScale.toEbitenColorScale())
 }
 
 func (l *Line) SetColorScaleRGBA(r, g, b, a uint8) {
@@ -89,7 +83,6 @@ func (l *Line) SetAlpha(a float32) {
 		return
 	}
 	l.colorScale.A = a
-	l.colorsChanged = true
 }
 
 func (l *Line) SetColorScale(colorScale ColorScale) {
@@ -97,18 +90,9 @@ func (l *Line) SetColorScale(colorScale ColorScale) {
 		return
 	}
 	l.colorScale = colorScale
-	l.colorsChanged = true
 }
 
-func (l *Line) recalculateColorM() {
-	var colorM ebiten.ColorM
-	if l.colorScale != defaultColorScale {
-		colorM.Scale(float64(l.colorScale.R), float64(l.colorScale.G), float64(l.colorScale.B), float64(l.colorScale.A))
-	}
-	l.colorM = colorM
-}
-
-func drawLine(dst *ebiten.Image, pos1, pos2 gmath.Vec, width float64, colorM ebiten.ColorM) {
+func drawLine(dst *ebiten.Image, pos1, pos2 gmath.Vec, width float64, colorScale ebiten.ColorScale) {
 	x1 := pos1.X
 	y1 := pos1.Y
 	x2 := pos2.X
@@ -121,7 +105,7 @@ func drawLine(dst *ebiten.Image, pos1, pos2 gmath.Vec, width float64, colorM ebi
 	drawOptions.GeoM.Rotate(math.Atan2(y2-y1, x2-x1))
 	drawOptions.GeoM.Translate(x1, y1)
 
-	drawOptions.ColorM = colorM
+	drawOptions.ColorScale = colorScale
 
 	dst.DrawImage(primitives.WhitePixel, &drawOptions)
 }

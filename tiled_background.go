@@ -5,6 +5,7 @@ import (
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/colorm"
 	resource "github.com/quasilyte/ebitengine-resource"
 	"github.com/quasilyte/ge/tiled"
 	"github.com/quasilyte/gmath"
@@ -55,10 +56,11 @@ func (bg *TiledBackground) LoadTilesetWithRand(ctx *Context, rand *gmath.Rand, w
 	}
 
 	combined := ebiten.NewImage(int(width), int(height))
-	var op ebiten.DrawImageOptions
-	applyColorScale(bg.ColorScale, &op.ColorScale)
+	var op colorm.DrawImageOptions
+	var colorM colorm.ColorM
+	applyColorScale2(bg.ColorScale, &colorM)
 	if bg.Hue != 0 {
-		op.ColorM.RotateHue(float64(bg.Hue))
+		colorM.RotateHue(float64(bg.Hue))
 	}
 	for y := float64(0); y < height; y += ts.TileHeight {
 		for x := float64(0); x < width; x += ts.TileWidth {
@@ -67,7 +69,7 @@ func (bg *TiledBackground) LoadTilesetWithRand(ctx *Context, rand *gmath.Rand, w
 			img := frames[frameIndex]
 			op.GeoM.Reset()
 			op.GeoM.Translate(offset.X, offset.Y)
-			combined.DrawImage(img, &op)
+			colorm.DrawImage(combined, img, colorM, &op)
 		}
 	}
 	bg.combined = combined

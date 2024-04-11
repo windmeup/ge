@@ -3,10 +3,10 @@ module github.com/quasilyte/ge
 go 1.22
 
 require (
-	github.com/hajimehoshi/ebiten/v2 v2.7.0
+	github.com/hajimehoshi/ebiten/v2 v2.7.1
 	github.com/quasilyte/ebitengine-resource v0.5.1-0.20230301215552-afd21c3065ff
 	github.com/quasilyte/gmath v0.0.0-20240205181328-bacb32a49519
-	golang.org/x/exp v0.0.0-20240404231335-c0f41cb1a7a0
+	golang.org/x/exp v0.0.0-20240409090435-93d18d7e34b8
 	golang.org/x/image v0.15.0
 	golang.org/x/text v0.14.0
 )

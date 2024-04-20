@@ -5,8 +5,8 @@ go 1.22
 require (
 	github.com/hajimehoshi/ebiten/v2 v2.7.1
 	github.com/quasilyte/ebitengine-resource v0.5.1-0.20230301215552-afd21c3065ff
-	github.com/quasilyte/gmath v0.0.0-20240205181328-bacb32a49519
-	golang.org/x/exp v0.0.0-20240409090435-93d18d7e34b8
+	github.com/quasilyte/gmath v0.0.0-20240416202515-2be31df8c173
+	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
 	golang.org/x/image v0.15.0
 	golang.org/x/text v0.14.0
 )

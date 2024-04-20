@@ -22,10 +22,10 @@ github.com/jfreymuth/vorbis v1.0.2 h1:m1xH6+ZI4thH927pgKD8JOH4eaGRm18rEE9/0WKjvN
 github.com/jfreymuth/vorbis v1.0.2/go.mod h1:DoftRo4AznKnShRl1GxiTFCseHr4zR9BN3TWXyuzrqQ=
 github.com/quasilyte/ebitengine-resource v0.5.1-0.20230301215552-afd21c3065ff h1:bj5GPthnwdc0kya97m/JmL613RBkzpZm1mWeGcdVK2I=
 github.com/quasilyte/ebitengine-resource v0.5.1-0.20230301215552-afd21c3065ff/go.mod h1:PEj32KsbbcgeSzAYQY5KspbImb/ucvJXoBgRMUrtBAQ=
-github.com/quasilyte/gmath v0.0.0-20240205181328-bacb32a49519 h1:RoIV1CoaGicfTFi9kFQXyixux45+a9YKfdlR2iYg5kw=
-github.com/quasilyte/gmath v0.0.0-20240205181328-bacb32a49519/go.mod h1:EbI+KMbALSVE2s0YFOQpR4uj66zBh9ter5P4CBMSuvA=
-golang.org/x/exp v0.0.0-20240409090435-93d18d7e34b8 h1:ESSUROHIBHg7USnszlcdmjBEwdMj9VUvU+OPk4yl2mc=
-golang.org/x/exp v0.0.0-20240409090435-93d18d7e34b8/go.mod h1:/lliqkxwWAhPjf5oSOIJup2XcqJaw8RGS6k3TGEc7GI=
+github.com/quasilyte/gmath v0.0.0-20240416202515-2be31df8c173 h1:U3yr/QxISZh9ZLh7JJmkM2VjpFb9WML02Z0qGVw46DU=
+github.com/quasilyte/gmath v0.0.0-20240416202515-2be31df8c173/go.mod h1:EbI+KMbALSVE2s0YFOQpR4uj66zBh9ter5P4CBMSuvA=
+golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f h1:99ci1mjWVBWwJiEKYY6jWa4d2nTQVIEhZIptnrVb1XY=
+golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f/go.mod h1:/lliqkxwWAhPjf5oSOIJup2XcqJaw8RGS6k3TGEc7GI=
 golang.org/x/image v0.15.0 h1:kOELfmgrmJlw4Cdb7g/QGuB3CvDrXbqEIww/pNtNBm8=
 golang.org/x/image v0.15.0/go.mod h1:HUYqC05R2ZcZ3ejNQsIHQDQiwWM4JBqmm6MKANTp4LE=
 golang.org/x/sync v0.7.0 h1:YsImfSBoP9QPYL0xyKJPq0gcaJdG3rInoqxTWbfQu9M=

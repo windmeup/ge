@@ -3,7 +3,7 @@ module github.com/quasilyte/ge
 go 1.22
 
 require (
-	github.com/hajimehoshi/ebiten/v2 v2.7.1
+	github.com/hajimehoshi/ebiten/v2 v2.7.2
 	github.com/quasilyte/ebitengine-resource v0.5.1-0.20230301215552-afd21c3065ff
 	github.com/quasilyte/gmath v0.0.0-20240416202515-2be31df8c173
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
